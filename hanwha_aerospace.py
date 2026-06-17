@@ -99,3 +99,6 @@ def solution(category, relation, member, article):
                     answer[i] += 1
     
     return answer
+
+#4
+#알파벳 하나 확대시 2 x 2 크기로 4개로 구성. 시간관계상 풀지 못하였으나, 한화시스템/방산 2번 문제와 유사
