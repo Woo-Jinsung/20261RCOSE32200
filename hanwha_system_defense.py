@@ -36,3 +36,52 @@ def solution(square, k):
     
     return dp[k + 1]
 
+#3
+from collections import deque
+
+def solution(v1, v2, a, b):
+    answer = 0
+    size = 1001
+    graph = [[] for _ in range(size)]
+    visited = [False] * size
+    n = len(v1)
+
+    for i in range(n):
+        x = v1[i]
+        y = v2[i]
+        graph[x].append(y)
+        graph[y].append(x)
+    
+    def bfs(start, end):
+        visited[start] = True
+        cand = []
+        queue = deque()
+        count = 0
+        queue.append((start, count))
+        while queue:
+            now, cnt = queue.popleft()
+            if cnt >= 2:
+                continue
+
+            for v in graph[now]:
+                if visited[v] == False:
+                    if v == end and cnt == 1:
+                        cand.append(now)
+                    else:
+                        visited[v] = True
+                        queue.append((v, cnt + 1))
+        return cand
+    
+    cand = bfs(a, b)
+    if len(cand) == 0:
+        return -1
+    
+    minimum = float('inf')
+
+    for c in cand:
+        temp = len(graph[c])
+        if minimum > temp:
+            minimum = temp
+            answer = c
+    
+    return answer
