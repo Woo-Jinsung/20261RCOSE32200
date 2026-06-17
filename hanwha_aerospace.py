@@ -49,3 +49,53 @@ def solution(initdb, mindb, maxdb, commands):
         answer.append(now)
     
     return answer
+
+#3
+def solution(category, relation, member, article):
+    answer = [0] * len(article)
+    dict_r = {}
+    arr = []
+    def findchild(target):
+        nonlocal dict_r, arr
+        if dict_r.get(target, 0) == 0:
+            arr.append(target)
+            return
+        else:
+            for i in dict_r[target]:
+                arr.append(i)
+                findchild(i)
+    
+    for relate in relation:
+        parent, child = relate.split()
+        if dict_r.get(parent, 0) == 0:
+            dict_r[parent] = [child]
+        else:
+            dict_r[parent].append(child)
+    
+    for cate in category:
+        if dict_r.get(cate, 0) == 0:
+            dict_r[cate] = 0
+    
+    for mem in member:
+        mem = list(mem.split())
+        person = mem[0]
+        targets = mem[1:]
+        arr = []
+        for target in targets:
+            if target in arr:
+                continue
+            else:
+                arr.append(target)
+                findchild(target)
+        
+        for i, art in enumerate(article):
+            available = False
+            art = list(art.split())
+            for a in art:
+                if a in arr:
+                    available = True
+                    break
+                if available:
+                    answer[i] += 1
+    
+    return answer
